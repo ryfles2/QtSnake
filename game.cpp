@@ -57,11 +57,24 @@ void Game::displayMainMenu(QString title,QString play)
     scoreButton->setPos(xPos3,yPos3);
     connect(scoreButton, SIGNAL(clicked()),this,SLOT(scoreTab()));
 
+    //Create Speed Button
+    Button * speedButton = new Button(sSPEED,titleText);
+    int xPos4 = 160;
+    int yPos4 = 300;
+    speedButton->setPos(xPos4,yPos4);
+    connect(speedButton, SIGNAL(clicked()),this,SLOT(speed()));
+
+    //Create Board Button
+    Button * boardButton = new Button(sBOARD,titleText);
+    int xPos5 = 160;
+    int yPos5 = 370;
+    boardButton->setPos(xPos5,yPos5);
+    connect(boardButton, SIGNAL(clicked()),this,SLOT(board()));
 
     //Create Quit Button
     Button * quitButton = new Button("Quit",titleText);
     int qxPos = 160;
-    int qyPos = 300;
+    int qyPos = 440;
     quitButton->setPos(qxPos,qyPos);
     connect(quitButton, SIGNAL(clicked()),this,SLOT(close()));
 
@@ -70,6 +83,10 @@ void Game::displayMainMenu(QString title,QString play)
 void Game::start(){
     snake = new MoveSnake();
     snake->setFlag(QGraphicsItem::ItemIsFocusable);
+    if(bBOARD)
+    {
+      snake->makeBoard();
+    }
     snake->setFocus();
     score->setVisible(true);
     score->setScore(0);
@@ -90,4 +107,43 @@ void Game::gameOver(){
 void Game::scoreTab()
 {
 
+
+}
+void Game::speed()
+{
+    if(sSPEED == "Low")
+    {
+        sSPEED="Medium";
+        SPEED=70;
+    }
+    else if(sSPEED == "Medium")
+    {
+        sSPEED="Hight";
+        SPEED=10;
+    }
+    else
+    {
+        sSPEED="Low";
+        SPEED=90;
+    }
+    gameScene->removeItem(titleText);
+    delete titleText;
+    displayMainMenu("Snake Master","Play");
+
+}
+void Game::board()
+{
+    if(bBOARD)
+    {
+        bBOARD=false;
+        sBOARD = "With no Board";
+    }
+    else
+    {
+        bBOARD=true;
+        sBOARD = "With Board";
+    }
+    gameScene->removeItem(titleText);
+    delete titleText;
+    displayMainMenu("Snake Master","Play");
 }

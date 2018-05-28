@@ -1,5 +1,12 @@
 #ifndef DEFINE_H
 #define DEFINE_H
-#define SIZE_X 920
-#define SIZE_Y 720
+#include <QString>
+//#define SIZE_X 920
+//#define SIZE_Y 720
+static int SIZE_X = 920;
+static int SIZE_Y = 720;
+static bool bBOARD = false;
+static QString sSPEED = "Low";
+static QString sBOARD = "With no Board";
+static int SPEED = 90;
 #endif // DEFINE_H

@@ -25,6 +25,8 @@ public:
 public slots:
     void start();
     void scoreTab();
+    void speed();
+    void board();
 };
 
 #endif // GAME_H

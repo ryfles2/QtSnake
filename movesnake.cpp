@@ -17,6 +17,7 @@ MoveSnake::MoveSnake(QGraphicsItem *parent):QGraphicsRectItem(parent)
     snakeTail = snakeHead;
 
     t = new QTimer();
+
     connect(t,SIGNAL(timeout()),this,SLOT(move()));
 
     foodTimer = new QTimer();
@@ -26,9 +27,6 @@ MoveSnake::MoveSnake(QGraphicsItem *parent):QGraphicsRectItem(parent)
 
     direction = "RIGHT";
 
-    //addPart();
-    //addPart();
-    //addPart();
 
     text = new QGraphicsTextItem(this);
     text->setVisible(true);
@@ -36,8 +34,6 @@ MoveSnake::MoveSnake(QGraphicsItem *parent):QGraphicsRectItem(parent)
     text->setPos(400,350);
     text->setFont(QFont("",14));
 
-
-    makeBoard();
 
 }
 
@@ -72,7 +68,7 @@ void MoveSnake::keyPressEvent(QKeyEvent *event)
         else{
 
             foodTimer->start(3000);
-            t->start(90);
+            t->start(SPEED);
             text->setVisible(false);
         }
 

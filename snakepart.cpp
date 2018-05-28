@@ -11,8 +11,6 @@ SnakePart::SnakePart(QGraphicsItem *parent):QGraphicsPixmapItem(parent)
 
 }
 
-
-
 SnakePart *SnakePart::getForward()
 {
     return forward;
@@ -46,7 +44,7 @@ void SnakePart::setDirection( QString value)
 
 void SnakePart::move() {
     static int first;
-    //qDebug() << direction << "dsdsd";
+
     if (direction == "DOWN")
         this->setY(this->y()+40);
     else if(direction == "UP")
@@ -82,7 +80,6 @@ void SnakePart::move() {
 void SnakePart::addBehind() {
     int x;
     int y;
-  //  qDebug() << 40;
     if(this->getForward()->getDirection() == "UP"){
         x = this->getForward()->x();
         y = this->getForward()->y() + 40;
@@ -148,7 +145,5 @@ void SnakePart::checkCollidingObjects() {
             return;
 
         }
-
-
     }
 }
