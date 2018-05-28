@@ -43,7 +43,7 @@ void Game::displayMainMenu(QString title,QString play)
 
     //create Button
     Button * playButton = new Button(play,titleText);
-    int xPos2 = 160 ;
+    int xPos2 = 100 ;
     int yPos2 = 160;
     playButton->setPos(xPos2,yPos2);
 
@@ -52,28 +52,28 @@ void Game::displayMainMenu(QString title,QString play)
 
     //Create Show Score Button
     Button * scoreButton = new Button("Show Score",titleText);
-    int xPos3 = 160;
+    int xPos3 = 100;
     int yPos3 = 230;
     scoreButton->setPos(xPos3,yPos3);
     connect(scoreButton, SIGNAL(clicked()),this,SLOT(scoreTab()));
 
     //Create Speed Button
     Button * speedButton = new Button(sSPEED,titleText);
-    int xPos4 = 160;
+    int xPos4 = 100;
     int yPos4 = 300;
     speedButton->setPos(xPos4,yPos4);
     connect(speedButton, SIGNAL(clicked()),this,SLOT(speed()));
 
     //Create Board Button
     Button * boardButton = new Button(sBOARD,titleText);
-    int xPos5 = 160;
+    int xPos5 = 100;
     int yPos5 = 370;
     boardButton->setPos(xPos5,yPos5);
     connect(boardButton, SIGNAL(clicked()),this,SLOT(board()));
 
     //Create Quit Button
     Button * quitButton = new Button("Quit",titleText);
-    int qxPos = 160;
+    int qxPos = 100;
     int qyPos = 440;
     quitButton->setPos(qxPos,qyPos);
     connect(quitButton, SIGNAL(clicked()),this,SLOT(close()));
@@ -99,10 +99,36 @@ void Game::start(){
 
 
 }
+void Game::addScore()
+{
+      gameScene->removeItem(snake);
+    //Create the title
+      titleText = new QGraphicsTextItem("Write your nick");
+      QFont titleFont("arial" , 50);
+      titleText->setFont( titleFont);
+      int xPos1 = width()/2 - titleText->boundingRect().width()/2;
+      int yPos1 = 150;
+      titleText->setPos(xPos1,yPos1);
+      gameScene->addItem(titleText);
 
+      //create Button
+      Button * playButton = new Button("Save",titleText);
+      int xPos2 = 100 ;
+      int yPos2 = 160;
+      playButton->setPos(xPos2,yPos2);
+
+
+      result = QInputDialog::getText(0, "Nick", "Write your nick:");
+
+
+      connect(playButton,SIGNAL(clicked()) , this , SLOT(gameOver()));
+}
 void Game::gameOver(){
-    displayMainMenu("Game Over!","Play Again");
-    gameScene->removeItem(snake);
+    gameScene->removeItem(titleText);
+    delete titleText;
+
+    displayMainMenu("Game Over!","Play");
+    //gameScene->removeItem(snake);
 }
 void Game::scoreTab()
 {
@@ -111,24 +137,24 @@ void Game::scoreTab()
 }
 void Game::speed()
 {
-    if(sSPEED == "Low")
+    if(sSPEED == "Speed Low")
     {
-        sSPEED="Medium";
+        sSPEED="Speed Medium";
         SPEED=70;
     }
-    else if(sSPEED == "Medium")
+    else if(sSPEED == "Speed Medium")
     {
-        sSPEED="Hight";
+        sSPEED="Speed Hight";
         SPEED=10;
     }
     else
     {
-        sSPEED="Low";
+        sSPEED="Speed Low";
         SPEED=90;
     }
     gameScene->removeItem(titleText);
     delete titleText;
-    displayMainMenu("Snake Master","Play");
+    displayMainMenu("Snake Game","Play");
 
 }
 void Game::board()
@@ -145,5 +171,5 @@ void Game::board()
     }
     gameScene->removeItem(titleText);
     delete titleText;
-    displayMainMenu("Snake Master","Play");
+    displayMainMenu("Snake Game","Play");
 }

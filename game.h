@@ -6,6 +6,9 @@
 #include <QGraphicsScene>
 #include "movesnake.h"
 #include <QGraphicsRectItem>
+//Text try********************************
+#include <QInputDialog>
+//*********************************************
 #include "score.h"
 #include "button.h"
 class Game:public QGraphicsView
@@ -21,12 +24,15 @@ public:
     void displayMainMenu(QString title, QString play);
     QGraphicsTextItem *titleText;
     Button *b;
-    void gameOver();
+    QString result;
+    //void gameOver();
+    void addScore();
 public slots:
     void start();
     void scoreTab();
     void speed();
     void board();
+    void gameOver();
 };
 
 #endif // GAME_H
