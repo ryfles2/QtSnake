@@ -117,7 +117,7 @@ void Game::addScore()
       int yPos2 = 160;
       playButton->setPos(xPos2,yPos2);
 
-
+      result = "Nick";
       result = QInputDialog::getText(0, "Nick", "Write your nick:");
 
 
@@ -127,12 +127,20 @@ void Game::gameOver(){
     gameScene->removeItem(titleText);
     delete titleText;
 
+    QString filename="Data.txt";
+    QFile file( filename );
+    if ( file.open(QIODevice::Append) )
+    {
+        QTextStream stream( &file );
+        stream << result<<" "<< score->getScore() << endl;
+    }
+
     displayMainMenu("Game Over!","Play");
     //gameScene->removeItem(snake);
 }
 void Game::scoreTab()
 {
-
+    addScore();
 
 }
 void Game::speed()

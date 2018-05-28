@@ -8,6 +8,7 @@
 #include <QGraphicsRectItem>
 //Text try********************************
 #include <QInputDialog>
+#include <QTextStream>
 //*********************************************
 #include "score.h"
 #include "button.h"
