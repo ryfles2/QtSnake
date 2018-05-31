@@ -141,8 +141,7 @@ void SnakePart::checkCollidingObjects() {
         }
         else if(coll[i]) {
             if(typeid(*coll[i])== typeid(SnakePart))
-            game->addScore();
-            //game->gameOver();
+            game->gameOver();
             return;
 
         }

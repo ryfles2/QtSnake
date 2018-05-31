@@ -15,6 +15,8 @@ MoveSnake::MoveSnake(QGraphicsItem *parent):QGraphicsRectItem(parent)
     snakeHead->part = "HEAD";
     snakeHead->setImage();
     snakeTail = snakeHead;
+    timeSPEED=90;
+    timeEatSPEED=3000;
 
     t = new QTimer();
 
@@ -67,8 +69,8 @@ void MoveSnake::keyPressEvent(QKeyEvent *event)
         }
         else{
 
-            foodTimer->start(3000);
-            t->start(SPEED);
+            foodTimer->start(timeEatSPEED);
+            t->start(timeSPEED);
             text->setVisible(false);
         }
 

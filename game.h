@@ -9,6 +9,10 @@
 //Text try********************************
 #include <QInputDialog>
 #include <QTextStream>
+#include <QXmlStreamWriter>
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QVector>
 //*********************************************
 #include "score.h"
 #include "button.h"
@@ -26,8 +30,7 @@ public:
     QGraphicsTextItem *titleText;
     Button *b;
     QString result;
-    //void gameOver();
-    void addScore();
+    QListWidget *w;
 public slots:
     void start();
     void scoreTab();

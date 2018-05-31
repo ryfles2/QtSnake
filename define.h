@@ -9,4 +9,5 @@ static bool bBOARD = false;
 static QString sSPEED = "Speed Low";
 static QString sBOARD = "With no Board";
 static int SPEED = 90;
+static int eatSPEED = 3000;
 #endif // DEFINE_H

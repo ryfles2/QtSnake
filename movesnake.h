@@ -12,8 +12,8 @@ public:
     void makeBoard();
     void addPart();
     void moveSnake();
-
-
+    int timeSPEED;
+    int timeEatSPEED;
 public slots:
     void move();
     void makeFood();
@@ -25,6 +25,7 @@ private:
     QTimer *foodTimer;
     QTimer *food2Timer;
     QGraphicsTextItem *text;
+
 };
 
 #endif // MOVESNAKE_H

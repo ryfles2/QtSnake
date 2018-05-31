@@ -82,6 +82,8 @@ void Game::displayMainMenu(QString title,QString play)
 }
 void Game::start(){
     snake = new MoveSnake();
+    snake->timeSPEED = SPEED;
+    snake->timeEatSPEED=eatSPEED;
     snake->setFlag(QGraphicsItem::ItemIsFocusable);
     if(bBOARD)
     {
@@ -99,48 +101,86 @@ void Game::start(){
 
 
 }
-void Game::addScore()
-{
-      gameScene->removeItem(snake);
-    //Create the title
-      titleText = new QGraphicsTextItem("Write your nick");
-      QFont titleFont("arial" , 50);
-      titleText->setFont( titleFont);
-      int xPos1 = width()/2 - titleText->boundingRect().width()/2;
-      int yPos1 = 150;
-      titleText->setPos(xPos1,yPos1);
-      gameScene->addItem(titleText);
-
-      //create Button
-      Button * playButton = new Button("Save",titleText);
-      int xPos2 = 100 ;
-      int yPos2 = 160;
-      playButton->setPos(xPos2,yPos2);
-
-      result = "Nick";
-      result = QInputDialog::getText(0, "Nick", "Write your nick:");
-
-
-      connect(playButton,SIGNAL(clicked()) , this , SLOT(gameOver()));
-}
 void Game::gameOver(){
-    gameScene->removeItem(titleText);
-    delete titleText;
+    gameScene->removeItem(snake);
+     result = QInputDialog::getText(0, "Nick", "Write your nick:");
+     if (result.isEmpty())
+     {
+         result = "Nick";
+     }
 
-    QString filename="Data.txt";
-    QFile file( filename );
-    if ( file.open(QIODevice::Append) )
-    {
-        QTextStream stream( &file );
-        stream << result<<" "<< score->getScore() << endl;
-    }
+
+      QString filename="Data.xml";
+      QFile file( filename );
+          if ( file.open(QIODevice::Append) )
+          {
+              QXmlStreamWriter xmlWriter(&file);
+              xmlWriter.setAutoFormatting(true);
+              if (file.pos() == 0) {
+                xmlWriter.writeStartDocument();
+                xmlWriter.writeStartElement("scores");
+              }
+
+                  xmlWriter.writeStartElement("score");
+                  xmlWriter.writeTextElement("nick", result);
+                  xmlWriter.writeTextElement("point", QString::number(score->getScore()));
+                  xmlWriter.writeEndElement(); // score
+
+              xmlWriter.writeEndDocument();
+          }
 
     displayMainMenu("Game Over!","Play");
-    //gameScene->removeItem(snake);
+
 }
 void Game::scoreTab()
 {
-    addScore();
+
+    w = new QListWidget();
+    w->setWindowTitle("Score:");
+
+
+    QXmlStreamReader Rxml;
+    QString filename="Data.xml";
+    QFile file( filename );
+
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+        {
+           w->addItem("Empty Score");
+        }
+
+        Rxml.setDevice(&file);
+        QString str;
+
+        QVector<QString> nick;
+        QVector<int> point;
+
+        bool flag = false;
+        while(!Rxml.atEnd() && !Rxml.hasError())
+        {
+            if(Rxml.readNext() == QXmlStreamReader::StartElement && Rxml.name() == "nick" || Rxml.name() == "point")
+            {
+                if(!flag)
+                {
+                    nick.push_back(Rxml.readElementText());
+                    //str=Rxml.readElementText();
+                    flag=true;
+                }
+                else
+                {
+                    point.push_back(Rxml.readElementText().toInt());
+                    //str+=Rxml.readElementText();
+                    w->addItem(str);
+                    flag=false;
+                }
+            }
+
+
+        }
+
+            file.close();
+
+
+           w->show();
 
 }
 void Game::speed()
@@ -148,22 +188,25 @@ void Game::speed()
     if(sSPEED == "Speed Low")
     {
         sSPEED="Speed Medium";
-        SPEED=70;
+        SPEED=60;
+        eatSPEED=2500;
     }
     else if(sSPEED == "Speed Medium")
     {
         sSPEED="Speed Hight";
-        SPEED=10;
+        SPEED=30;
+        eatSPEED=2000;
+
     }
     else
     {
         sSPEED="Speed Low";
         SPEED=90;
+        eatSPEED=3000;
     }
     gameScene->removeItem(titleText);
     delete titleText;
     displayMainMenu("Snake Game","Play");
-
 }
 void Game::board()
 {
