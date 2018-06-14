@@ -17,15 +17,15 @@ Game::Game(QWidget *parent):QGraphicsView(parent)
     setScene(gameScene);
     score = new Score();
     gameScene->addItem(score);
-    snake2 = NULL;
-    snake = NULL;
+    moveSnake2 = NULL;
+    moveSnake1 = NULL;
 
 }
 
 void Game::keyPressEvent(QKeyEvent *event)
 {
-    if(snake)
-    snake->keyPressEvent(event);
+    if(moveSnake1)
+    moveSnake1->keyPressEvent(event);
     else
         QGraphicsView::keyPressEvent(event);
 }
@@ -81,28 +81,28 @@ void Game::displayMainMenu(QString title,QString play)
 
 }
 void Game::start(){
-    snake = new MoveSnake();
-    snake->timeSPEED = SPEED;
-    snake->timeEatSPEED=eatSPEED;
-    snake->setFlag(QGraphicsItem::ItemIsFocusable);
+    moveSnake1 = new MoveSnake();
+    moveSnake1->timeSPEED = SPEED;
+    moveSnake1->timeEatSPEED=eatSPEED;
+    moveSnake1->setFlag(QGraphicsItem::ItemIsFocusable);
     if(bBOARD)
     {
-      snake->makeBoard();
+      moveSnake1->makeBoard();
     }
-    snake->setFocus();
+    moveSnake1->setFocus();
     score->setVisible(true);
     score->setScore(0);
-    gameScene->addItem(snake);
+    gameScene->addItem(moveSnake1);
     gameScene->removeItem(titleText);
     delete titleText;
-    if (snake2)
-    snake2->deleteLater();
-    snake2 = snake;
+    if (moveSnake2)
+    moveSnake2->deleteLater();
+    moveSnake2 = moveSnake1;
 
 
 }
 void Game::gameOver(){
-    gameScene->removeItem(snake);
+    gameScene->removeItem(moveSnake1);
      result = QInputDialog::getText(0, "Nick", "Write your nick:");
      if (result.isEmpty())
      {
@@ -126,7 +126,7 @@ void Game::gameOver(){
                   xmlWriter.writeTextElement("point", QString::number(score->getScore()));
                   xmlWriter.writeEndElement(); // score
 
-              xmlWriter.writeEndDocument();
+              //xmlWriter.writeEndDocument();
           }
 
     displayMainMenu("Game Over!","Play");
@@ -149,7 +149,7 @@ void Game::scoreTab()
         }
 
         Rxml.setDevice(&file);
-        QString str;
+
 
         QVector<QString> nick;
         QVector<int> point;
@@ -169,13 +169,35 @@ void Game::scoreTab()
                 {
                     point.push_back(Rxml.readElementText().toInt());
                     //str+=Rxml.readElementText();
-                    w->addItem(str);
+                    //w->addItem(str);
                     flag=false;
                 }
             }
 
 
         }
+        for(int j = 0; j < point.size()-1; j++)
+        {
+            for(int i = 0; i < point.size()-1; i++)
+            {
+              if(point[i] < point[i + 1])
+              {
+                  int pom = point[i + 1];
+                  point[i + 1] = point[i];
+                  point[i] = pom;
+                  swap(nick[i], nick[i + 1]);
+              }
+            }
+        }
+        w->addItem("Nick:  Point:");
+        w->item(0)->setBackgroundColor(Qt::red);
+        for(int i = 0; i < point.size(); i++)
+        {
+            QString str = nick[i] +" "+ QString::number(point[i]);
+            w->addItem(str);
+            w->item(i+1)->setBackgroundColor(Qt::yellow);
+        }
+
 
             file.close();
 
@@ -188,20 +210,20 @@ void Game::speed()
     if(sSPEED == "Speed Low")
     {
         sSPEED="Speed Medium";
-        SPEED=60;
+        SPEED=70;
         eatSPEED=2500;
     }
     else if(sSPEED == "Speed Medium")
     {
         sSPEED="Speed Hight";
-        SPEED=30;
+        SPEED=80;
         eatSPEED=2000;
 
     }
     else
     {
         sSPEED="Speed Low";
-        SPEED=90;
+        SPEED=190;
         eatSPEED=3000;
     }
     gameScene->removeItem(titleText);

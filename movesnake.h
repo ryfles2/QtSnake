@@ -23,7 +23,6 @@ private:
     QString direction;
     QTimer *t;
     QTimer *foodTimer;
-    QTimer *food2Timer;
     QGraphicsTextItem *text;
 
 };

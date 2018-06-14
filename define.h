@@ -1,8 +1,6 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 #include <QString>
-//#define SIZE_X 920
-//#define SIZE_Y 720
 static int SIZE_X = 920;
 static int SIZE_Y = 720;
 static bool bBOARD = false;

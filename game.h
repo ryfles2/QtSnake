@@ -24,8 +24,8 @@ public:
     void keyPressEvent(QKeyEvent *event);
     Score *score;
     QGraphicsScene *gameScene ;
-    MoveSnake *snake;
-    MoveSnake *snake2;
+    MoveSnake *moveSnake1;
+    MoveSnake *moveSnake2;
     void displayMainMenu(QString title, QString play);
     QGraphicsTextItem *titleText;
     Button *b;

@@ -133,7 +133,7 @@ void SnakePart::checkCollidingObjects() {
             QLineF ln(thisCenter,foodCenter);
             if(ln.length() == 0){
 
-           game->snake->addPart();
+           game->moveSnake1->addPart();
            game->gameScene->removeItem(f);
            game->score->setScore(game->score->getScore()+f->score);
            delete f;
